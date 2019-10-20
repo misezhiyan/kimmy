@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.treasure.dao.po.mapper.UserPokerMapper">
+
+	<resultMap id="ibator_BaseResultMap" type="com.treasure.dao.po.UserPoker">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="poker_id" property="poker_id" jdbcType="VARCHAR" />
+		<result column="user_id" property="user_id" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="bind_time" property="bind_time" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="is_default" property="is_default" jdbcType="INTEGER" />
+		<result column="connect_time" property="connect_time" jdbcType="TIMESTAMP" />
+		<result column="udpateBy" property="udpateBy" jdbcType="VARCHAR" />
+		<result column="updateDate" property="udpateBy" jdbcType="TIMESTAMP" />
+		<result column="deleteBy" property="udpateBy" jdbcType="VARCHAR" />
+		<result column="deleteDate" property="udpateBy" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<!-- 列出用户绑定的账户  -->
+	<select id="getPokerList" resultMap="ibator_BaseResultMap" parameterType="com.treasure.dao.po.UserPoker">
+	SELECT
+		*
+	FROM
+		user_poker
+	WHERE
+		`user_id` = #{user_id:VARCHAR} AND `status` = 0
+	</select>
+	<!-- 校验账户是否已绑定  -->
+	<select id="checkPoker" resultType="java.lang.Integer" parameterType="com.treasure.dao.po.UserPoker">
+	SELECT
+		count(1)
+	FROM
+		user_poker
+	WHERE
+		`user_id` = #{user_id:VARCHAR} AND `name` = #{name:VARCHAR} AND `status` = 0
+	</select>
+	
+	<!-- 绑定账户  -->
+	<insert id="pokerBind" parameterType="com.treasure.dao.po.UserPoker">
+	INSERT INTO 
+	user_poker(
+		`poker_id`,
+		`user_id`,
+		`name`,
+		`password`,
+		`bind_time`
+	)
+	VALUES(
+		#{poker_id:VARCHAR},
+		#{user_id:VARCHAR},
+		#{name:VARCHAR},
+		#{password:VARCHAR},
+		#{bind_time:TIMESTAMP}
+	)
+	</insert>
+	<!-- <insert id="pokerBind" parameterType="com.treasure.dao.po.UserPoker">
+	INSERT INTO (
+		`poker_id`,
+		`user_id`,
+		`name`,
+		`password`,
+		`bind_time`,
+		`status`,
+		`is_default`,
+		`connect_time`,
+		`udpateBy`,
+		`updateDate`,
+		`deleteBy`,
+		`deleteDate`
+	)
+	VALUES(
+		#{poker_id:VARCHAR},
+		#{user_id:VARCHAR},
+		#{name:VARCHAR},
+		#{password:VARCHAR},
+		#{bind_time:TIMESTAMP},
+		#{status:INTEGER},
+		#{is_default:INTEGER},
+		#{connect_time:TIMESTAMP},
+		#{udpateBy:VARCHAR},
+		#{updateDate:TIMESTAMP},
+		#{deleteBy:VARCHAR},
+		#{deleteDate:TIMESTAMP}
+	</insert> -->
+	
+</mapper>
+  

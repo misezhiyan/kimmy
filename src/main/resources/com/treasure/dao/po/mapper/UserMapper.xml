@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.treasure.dao.po.mapper.UserMapper">
+
+	<resultMap id="ibator_BaseResultMap" type="com.treasure.dao.po.User">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="user_id" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="registerTime" property="registerTime" jdbcType="TIMESTAMP" />
+		<result column="lastLoadOnTime" property="lastLoadOnTime" jdbcType="TIMESTAMP" />
+		<result column="lastRequestTime" property="lastRequestTime" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="udpateBy" property="udpateBy" jdbcType="VARCHAR" />
+		<result column="updateDate" property="udpateBy" jdbcType="TIMESTAMP" />
+		<result column="deleteBy" property="udpateBy" jdbcType="VARCHAR" />
+		<result column="deleteDate" property="udpateBy" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<!-- 查看用戶是否存在 -->
+	<select id="checkUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+	SELECT
+		count(1)
+	FROM
+		user
+	WHERE
+		`name` = #{name:VARCHAR}
+	</select>
+	
+	<!-- 注册用户  -->
+	<update id="registUser" parameterType="com.treasure.dao.po.User">
+	INSERT INTO `user` (
+		user_id,
+		`name`,
+		`password`,
+		`registerTime`,
+		`status`
+	)
+	VALUES
+		(
+			#{user_id:VARCHAR},
+			#{name:VARCHAR},
+			#{password:VARCHAR},
+			#{registerTime:TIMESTAMP},
+			"0"
+		);
+	</update>
+	
+	<!-- 更新最后请求时间  -->
+	<update id="updateLastRequestTime" parameterType="com.treasure.dao.po.User">
+	UPDATE `user`
+	SET
+	 `lastRequestTime` = #{lastRequestTime:TIMESTAMP}
+	WHERE
+		user_id = #{user_id:VARCHAR}
+	</update>
+	
+	<!-- 更新最后登录时间  -->
+	<update id="updateLastLoadOnTime" parameterType="com.treasure.dao.po.User">
+	UPDATE `user`
+	SET
+	 `lastLoadOnTime` = #{lastLoadOnTime:TIMESTAMP}
+	WHERE
+		user_id = #{user_id:VARCHAR}
+	</update>
+	
+	
+	
+	<!-- 校验登录信息  -->
+	<select id="checkLoginInfo" resultMap="ibator_BaseResultMap" parameterType="com.treasure.dao.po.User">
+	SELECT
+		*
+	FROM
+		user
+	WHERE
+		1=1
+		<if test="user_id != null and user_id != ''">
+			AND user_id = #{user_id:VARCHAR}
+		</if>
+		<if test="name != null and name != ''">
+			AND name = #{name:VARCHAR}
+		</if>
+		<if test="password != null and password != ''">
+			AND password = #{password:VARCHAR}
+		</if>
+		<if test="registerTime != null and registerTime != ''">
+			AND registerTime = #{registerTime:VARCHAR}
+		</if>
+		<if test="lastLoadOnTime != null and lastLoadOnTime != ''">
+			AND lastLoadOnTime = #{lastLoadOnTime:VARCHAR}
+		</if>
+		<if test="lastRequestTime != null and lastRequestTime != ''">
+			AND lastRequestTime = #{lastRequestTime:VARCHAR}
+		</if>
+		<if test="status != null and status != ''">
+			AND status = #{status:VARCHAR}
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 查看校验密码 -->
+	<!-- <select id="checkPassword" resultType="java.lang.String" parameterType="java.lang.String">
+	SELECT
+		`password`
+	FROM
+		user
+	WHERE
+		`name` = #{userName:VARCHAR}
+	</select>
+	 -->
+	<!-- 获取用户信息-->
+	<!-- <select id="getUser" resultType="com.treasure.dao.po.User" parameterType="java.lang.String">
+	SELECT
+		`id`,
+		user_id,
+		`name`,
+		`password`
+	FROM
+		user
+	WHERE
+		`name` = #{userName:VARCHAR}
+	</select> -->
+	<!-- 注册用户  -->
+	<!-- 
+	<update id="saveUser" parameterType="com.databaseOut.po.User">
+	INSERT INTO `user` (
+		user_id,
+		`name`,
+		`password`,
+		`registerTime`
+	)
+	VALUES
+		(
+			#{user_id:VARCHAR},
+			#{name:VARCHAR},
+			#{password:VARCHAR},
+			#{registerTime:TIMESTAMP}
+		);
+	</update> -->
+	
+	
+	
+</mapper>
+  

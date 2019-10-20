@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- =====================以下是配置url和类方法匹配的配置，每添加一个方法，就需要在这里配置一下 START=====================-->
+	<!-- 请求映射 -->
+	<!--定义映射处理器： 按类别（如：HandlerMapping）寻找所有不需要id -->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" >
+		<property name="mappings"><!-- 属性mappings是一个映射列表 键值对 key=访问路径 value（控制器id）= id为StartController的bean -->
+			<props>
+				<prop key="/signIn/indexPage.do">signInController</prop>
+				<prop key="/signIn/registerPage.do">signInController</prop>
+				<prop key="/signIn/signInPage.do">signInController</prop>
+				<prop key="/signIn/register.do">signInController</prop>
+				<prop key="/signIn/login.do">signInController</prop>
+				<!-- 登录成功跳转页面 -->
+				<!-- <prop key="/main/loginsuccess.do">mainController</prop> -->
+				<prop key="/poker/pokerBindPage.do">pokerController</prop>
+				<prop key="/poker/pokerBindMessage.do">pokerController</prop>
+				<prop key="/poker/pokerBind.do">pokerController</prop>
+			</props>
+		</property>	
+	</bean>
+
+	<!-- url和方法的映射 -->
+	<!-- 登录 -->
+	<bean id="signInController" class="com.treasure.web.SignInController">
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/signIn/indexPage.do">indexPage</prop>
+						<prop key="/signIn/registerPage.do">registerPage</prop>
+						<prop key="/signIn/signInPage.do">signInPage</prop>
+						<prop key="/signIn/register.do">register</prop>
+						<prop key="/signIn/login.do">login</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+		<property name="loginBusinessService" ref="loginBusinessService"></property>
+	</bean>
+	<!-- 登录成功跳转业务类 -->
+	<!-- <bean id="mainController" class="com.treasure.web.MainController">
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/main/loginsuccess.do">loginsuccess</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean> -->
+	<bean id="pokerController" class="com.treasure.web.PokerController">
+		<property name="methodNameResolver">
+			<bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+				<property name="mappings">
+					<props>
+						<prop key="/poker/pokerBindPage.do">pokerBindPage</prop>
+						<prop key="/poker/pokerBindMessage.do">pokerBindMessage</prop>
+						<prop key="/poker/pokerBind.do">pokerBind</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+		<property name="pokerBusinessService" ref="pokerBusinessService"></property>
+	</bean> 
+	
+	<!-- =====================以上是配置url和类方法匹配的配置，每添加一个方法，就需要在这里配置一下 END=====================-->
+
+</beans>
